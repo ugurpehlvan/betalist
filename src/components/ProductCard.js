@@ -64,7 +64,8 @@ const ProductCard = ({ id, image, name, price, discount, rating, originalPrice, 
             <CardMedia
                 component="img" 
                 alt={name} 
-                height="100%"  
+                height="260" // Adjust the height as needed
+                style={{ objectFit: 'cover', width: '100%' }}
                 image={imageError ? fallbackImageUrl : image}   
                 onError={handleImageError} 
             />
