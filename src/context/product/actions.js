@@ -13,8 +13,9 @@ export const getProducts = (dispatch) => async () => {
     ]).then(([product, carts]) => {
       // get quatity of each product in cart and add to product
       const cartByProductId = new Map();
-      carts.data.forEach((cart) => {
-        cartByProductId.set(cart.productId, cart);
+      const cartsData = Array.isArray(carts?.data) ? carts?.data : [];
+      cartsData?.forEach((cart) => {
+        cartByProductId.set(cart?.productId, cart);
       });
       const products = product.data.map((item) => {
         const cart = cartByProductId.get(item.id);
@@ -56,7 +57,8 @@ export const searchProducts = (dispatch) => async (name) => {
       axiosClient.get(apiURL.getCart),
     ]).then(([product, carts]) => {
       const cartByProductId = new Map();
-      carts?.data?.forEach((cart) => {
+      const cartsData = Array.isArray(carts?.data) ? carts?.data : [];
+      cartsData?.forEach((cart) => {
         cartByProductId.set(cart.productId, cart);
       });
 
