@@ -1,9 +1,9 @@
-import { apiURL, axiosClient } from 'service';
+import { apiURL, axiosClient } from "service";
 import {
   GET_PRODUCTS,
   ADD_TO_CART,
-  SUBTRACT_FROM_CART
-} from 'context/product/keys';
+  SUBTRACT_FROM_CART,
+} from "context/product/keys";
 
 export const getProducts = (dispatch) => async () => {
   try {
@@ -48,7 +48,7 @@ export const subtractFromCart = (dispatch) => async (id) => {
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 export const searchProducts = (dispatch) => async (name) => {
   try {
@@ -62,17 +62,19 @@ export const searchProducts = (dispatch) => async (name) => {
         cartByProductId.set(cart.productId, cart);
       });
 
-      const products = Array.isArray(product?.data) ? product?.data?.map((item) => {
-        const cart = cartByProductId.get(item?.id);
-        return {
-          ...item,
-          quantity: cart ? cart?.quantity : 0,
-        };
-      }) : [];
+      const products = Array.isArray(product?.data)
+        ? product?.data?.map((item) => {
+            const cart = cartByProductId.get(item?.id);
+            return {
+              ...item,
+              quantity: cart ? cart?.quantity : 0,
+            };
+          })
+        : [];
 
       dispatch({ type: GET_PRODUCTS, payload: products });
     });
   } catch (error) {
     console.log(error);
   }
-}
+};

@@ -1,5 +1,5 @@
-import providers from 'context/providers';
-import React from 'react';
+import providers from "context/providers";
+import React from "react";
 
 const AppProvider = ({ children }) => {
   let result = children;

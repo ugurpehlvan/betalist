@@ -1,8 +1,8 @@
 import {
   GET_PRODUCTS,
   ADD_TO_CART,
-  SUBTRACT_FROM_CART
-} from 'context/product/keys';
+  SUBTRACT_FROM_CART,
+} from "context/product/keys";
 
 export const initialState = {
   products: [],

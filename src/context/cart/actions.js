@@ -1,7 +1,5 @@
-import { apiURL, axiosClient } from 'service';
-import {
-  GET_CARTS,
-} from 'context/cart/keys';
+import { apiURL, axiosClient } from "service";
+import { GET_CARTS } from "context/cart/keys";
 
 export const getCarts = (dispatch) => async () => {
   try {

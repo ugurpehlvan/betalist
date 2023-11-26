@@ -1,2 +1,2 @@
-export { default as axiosClient } from 'service/axios';
-export { default as apiURL } from 'service/apiURL';
+export { default as axiosClient } from "service/axios";
+export { default as apiURL } from "service/apiURL";

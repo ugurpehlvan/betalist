@@ -1,6 +1,4 @@
-import {
-  GET_CARTS,
-} from 'context/cart/keys';
+import { GET_CARTS } from "context/cart/keys";
 
 export const initialState = {
   carts: [],
