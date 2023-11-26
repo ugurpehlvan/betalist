@@ -1,93 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-// components
-import {
-	Container,
-	Grid,
-	Button
-} from '@mui/material';
-import SearchBar from './components/SearchBar';
-import ProductCard from './components/ProductCard';
+// pages
+import Products from 'pages/products';
+import Cart from 'pages/cart';
 
-const initialProducts = [
-	{
-		image: 'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
-		name: 'Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops',
-		price: 109.95,
-		discountRate: null,
-		ratings: 5,
-		reviews: 120
-	},
-	{
-		image: 'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
-		name: 'Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops',
-		price: 109.95,
-		discountRate: null,
-		ratings: 5,
-		reviews: 120
-	},
-	{
-		image: 'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
-		name: 'Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops',
-		price: 109.95,
-		discountRate: null,
-		ratings: 5,
-		reviews: 120
-	},
-	{
-		image: 'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
-		name: 'Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops',
-		price: 109.95,
-		discountRate: null,
-		ratings: 5,
-		reviews: 120
-	},
-	{
-		image: 'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
-		name: 'Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops',
-		price: 109.95,
-		discountRate: null,
-		ratings: 5,
-		reviews: 120
-	},
-	{
-
-		image: 'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
-		name: 'Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops',
-		price: 109.95,
-		discountRate: null,
-		ratings: 5,
-		reviews: 120
-	},
-];
+// services
+import { axiosClient } from 'service';
 
 function App() {
-	const [visibleProducts, setVisibleProducts] = useState(3);
-	const productsToShow = initialProducts.slice(0, visibleProducts);
+	const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-	const handleLoadMore = () => {
-		setVisibleProducts((prevVisibleProducts) => prevVisibleProducts + 3);
-	};
+	useEffect(() => {
+		const sessionId = localStorage.getItem('sessionId');
+		if (sessionId) {
+			axiosClient.defaults.headers.common['Session-ID'] = sessionId;
+			setIsAuthenticated(true);
+			return;
+		} else {
+			axiosClient.get("/createsession").then((res) => {
+				const sessionId = res.data;
+				axiosClient.defaults.headers.common['Session-ID'] = sessionId;
+				localStorage.setItem('sessionId', sessionId);
+				setIsAuthenticated(true);
+			}).catch((err) => {
+				console.log(err);
+			});
+		}
+	}, []);
+
+	if (!isAuthenticated) {
+		return <div>Loading...</div>;
+	}
 
 	return (
 		<div className="App">
-			<SearchBar />
-			<Container maxWidth="lg" style={{ marginTop: '20px' }}>
-				<Grid container spacing={2}>
-					{productsToShow.map((product, index) => (
-						<Grid key={index} item xs={12} sm={6} md={4}>
-							<ProductCard {...product} />
-						</Grid>
-					))}
-					{visibleProducts < initialProducts.length && (
-						<Grid item style={{ textAlign: 'center' }} xs={12}>
-							<Button variant="contained" color="primary" onClick={handleLoadMore}>
-								Load More
-							</Button>
-						</Grid>
-					)}
-				</Grid>
-			</Container>
+			<BrowserRouter basename={"/"}>
+				<Routes>
+					<Route path="/" element={<Products />} />
+					<Route path="/cart" element={<Cart />} />
+				</Routes>
+			</BrowserRouter>
 		</div>
 	);
 }
