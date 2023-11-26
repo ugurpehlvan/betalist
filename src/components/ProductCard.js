@@ -7,7 +7,8 @@ import {
     CardContent,
     Typography,
     IconButton,
-    Box
+    Box,
+    styled
 } from '@mui/material';
 import Rating from '@mui/material/Rating';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -16,18 +17,26 @@ import AddIcon from '@mui/icons-material/Add';
 // context
 import { ProductContext } from 'context';
 
-const styles = {
-    icon: {
-        width: "24px", 
-        height: "24px",
-        borderRadius: "4px", 
-        display: "flex", 
-        alignItems: "center", 
-        justifyContent: "center",
-        border: "1px solid #C24B5A",
-        margin: "2px 0px"
-    }
-}
+const DiscountBadge = styled(Typography)(({ theme }) => ({
+    background: "#C24B5A",
+    color: theme.palette.common.white,
+    padding: "3px 6px",
+    borderRadius: "16px",
+    fontSize: "12px",
+    margin: theme.spacing(0.5),
+    position: 'absolute',
+  }));
+
+const iconStyle = {
+    width: "24px", 
+    height: "24px",
+    borderRadius: "4px", 
+    display: "flex", 
+    alignItems: "center", 
+    justifyContent: "center",
+    border: "1px solid #C24B5A",
+    margin: "2px 0px"
+};
 
 const ProductCard = ({ id, image, name, price, discount, rating, originalPrice, quantity }) => {
     const { addToCart, subtractFromCart } = useContext(ProductContext);
@@ -50,11 +59,9 @@ const ProductCard = ({ id, image, name, price, discount, rating, originalPrice, 
     return (
         <Card>
              {discount && (
-                <Typography style={{ background: "#C24B5A", color: "#ffff", padding: "3px 6px", borderRadius: "16px", fontSize: "12px", margin: "4px", position: "absolute" }} variant="body2">
-                    {discount}
-                </Typography>
+                <DiscountBadge variant="body2">{discount}</DiscountBadge>
             )}
-            <CardMedia 
+            <CardMedia
                 component="img" 
                 alt={name} 
                 height="100%"  
@@ -80,17 +87,17 @@ const ProductCard = ({ id, image, name, price, discount, rating, originalPrice, 
                     </Box>
                     <Box>
                     <Box display="flex" flexDirection="column" alignItems="center">
-                        <Box style={{ ...styles.icon, ...(quantity === 0 ? { border: "1px solid #ffff",  } : { }) }}>
+                        <Box sx={{ ...iconStyle, ...(quantity === 0 ? { border: "1px solid #ffff",  } : { }) }}>
                             {Number(quantity) > 0 && (
                                 <IconButton onClick={handleDecrease} disabled={quantity === 0}>
                                     <RemoveIcon />
                                 </IconButton>
                             )}
                         </Box>
-                        <Box style={{ ...styles.icon, ...(quantity === 0 ? { border: "1px solid #ffff",  } : { }) }}>
+                        <Box sx={{ ...iconStyle, ...(quantity === 0 ? { border: "1px solid #ffff",  } : { }) }}>
                             <Typography variant="body2">{quantity || ""}</Typography>
                         </Box>
-                        <Box style={styles.icon}>
+                        <Box sx={iconStyle}>
                             <IconButton onClick={handleIncrease}>
                                 <AddIcon />
                             </IconButton>
